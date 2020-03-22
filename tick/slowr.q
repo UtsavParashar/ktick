@@ -12,7 +12,7 @@ upd:insert;
 .u.end:{t:tables`.;t@:where `g=attr each t@\:`sym;.Q.hdpf[`$":",.u.x 1;`:.;x;`sym];@[;`sym;`g#] each t;};
 
 / init schema and sync up from log file;cd to hdb(so client save can run)
-.u.rep:{(.[;();:;].)each x;if[null first y;:()];-11!y;system "cd ",1_-10_string first reverse y};
+.u.rep:{(.[;();:;].)each x;if[null first y;:()];system "sleep 30";-11!y;system "sleep 60";system "cd ",1_-10_string first reverse y};
 / HARDCODE \cd if other than logdir/db
 
 / connect to ticker plant for (schema;(logcount;log))

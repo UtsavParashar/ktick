@@ -16,4 +16,4 @@ getask:{[s] prices[s]+getmovement[s]} /generate ask price
     h(".u.upd";`trade;(n#.z.N;s;getprice'[s];n?1000))];
   flag+:1; }
 /trigger timer every 100ms
-\t 1000
+\t 1
