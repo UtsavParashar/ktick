@@ -1,0 +1,11 @@
+Format of TPLogFile:
+--------------------
+    It's a list with 3 items:
+        1. update function, which should be defined (vanilla form upd:insert)
+        2. table name
+        3. List of column values, table of column values( flipped dict)
+(`upd `trade (0D14:56:01.113310000;`AUDUSD;"S";1000;96.96))
+(`upd;`accounts; type (+) `sym`time`curr`action`limit!
+  (`ACCOUNT0024; 2014.05.04D10:54:41.796915000;`SGDUSD;`insert;1000000);
+
+
