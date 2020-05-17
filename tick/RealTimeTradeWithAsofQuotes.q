@@ -1,3 +1,6 @@
+/sample usage
+/q tick/RealTimeTradeWithAsofQuotes.q -tp localhost:5000 -syms MSFT.O IBM.N GS.N
+
 /
 The purpose of this script is as follows:
 1. Demonstrate how custom real-time subscribers can be created in q
@@ -9,8 +12,7 @@ The purpose of this script is as follows:
    This replaces the standard tickerplant log file replay functionality.
 \
 show "RealTimeTradeWithAsofQuotes.q";
-/sample usage
-/q tick/RealTimeTradeWithAsofQuotes.q -tp localhost:5000 -syms MSFT.O IBM.N GS.N
+
 
 /default command line arguments - tp is location of tickerplant.
 /syms are the symbols we wish to subscribe to
