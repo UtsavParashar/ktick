@@ -1,0 +1,36 @@
+/- Learnings from Data Recovery from Kdb Plus Tick White Paper:
+
+1. The tickerplant maintains some key variables which are imp in context of data recovery from tplog.
+    .u.l -> A handle to the log file which is created at startup. This is used to write each message to the disk.
+    .u.L -> Path to the log file which is named something like sym_currentData.
+    .u.i -> Total count of messages in the log file.
+    .u.j -> Total count of messages in the ticker plant i.e .u.i + messages buffered in memory (.z.W)
+
+2. The upd function in tick.q is called each time TP received a message.  Within this function tp will write message to the ticker plant.
+
+3. Replaying TP Log - On startup RDB will subscribe to the TP and will receive the information about the message count (.u.i) and the location of the log file .u.L in return.
+    This will result in RDB replaying .u.i messages from the tplog file and meanwhile the incoming messages are stored in buffered queue which can be found using .z.W, once replaying the log file is done then rdb starts clearing the queue and thus receiving messages on realtime basis.
+
+4. Streaming replay function - -11!
+    The replay is achieved using -11 i.e streaming replay function. This is called within .u.rep of rdb.q which is executed when rdb connects to TP.
+    * -11! is an internal function which reads each msg from tplog running the function (functionName i.e upd in this case) on (`tableName; tableData).
+
+5. -11! has 3 distinct usages:
+    1. -11!(-1; `:tplog) ~ -11!`:tplpg ~ value each get `:tplog
+        This form of -11 can be used on uncorrupted files as it reads the messages from the tplog using the defined function(upd) on table and tableData.
+
+        using -11! is beneficial over get because get has to first load complete data in memory and then apply each and value to it.
+
+        value function is a useful function which helps in running function over values like
+            value({x-y};3;2) /- 1
+
+    2. -11!(-2; `:tplog)
+        This form of -11 is useful in case of corrupt file, running -11!(-2; `:tplog) tells the count and memory used in bytes till the uncorrupt message.
+        -11!(-2; `:tplog) /- 19502 5276800
+        Incase if the file in not corrupt then the result is same as -11!(`:tplog)
+
+    3. -11!(n;`:tplog)
+        This form is useful to recover the messages till provided number of valid messages by -11!-2.
+        Eg. -11!(19502; `:tplog)
+
+    Example for a corrupt log file can be found at utilities/replayCorruptTPLogFile.q.
