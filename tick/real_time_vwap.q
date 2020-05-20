@@ -17,6 +17,7 @@ if[not "w"=first string .z.o;system "sleep 1"];
 /initialize schema function
 /- below function is similar to .u.rep
 InitializeTrade:{[TradeInfo;logfile]
+    0N!TradeInfo; /- Messages coming from log file
   `trade set TradeInfo 1;
   if[null first logfile;update v:0n,s:0Ni,rvwap:0n from `trade;:()];
   -11!logfile;
@@ -26,8 +27,8 @@ InitializeTrade:{[TradeInfo;logfile]
 /this keyed table maps a symbol to its current vwap
 vwap:([sym:`$()] rvwap:`float$());
 
-upd:{if[not `trade=x;:()];`trade insert y};
-/- upd:{if[`trade=x;`trade insert y]};
+/- upd:{if[not `trade=x;:()];`trade insert y};
+upd:{if[`trade=x;`trade insert y]};
 
 /
 This intraday function is triggered upon incoming updates from TP.
@@ -40,6 +41,7 @@ Its behavior is as follows:
 5. Update vwap table
 \
 updIntraDay:{[t;d]
+  0N!d; /- Messages coming directly from the feed
   d:update s:sums size,v:sums size*price by sym from d;
   d:d pj select last v,last s by sym from trade;
   d:update rvwap:v%s from d;
