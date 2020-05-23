@@ -1,7 +1,7 @@
 h:neg hopen `:localhost:5000 /connect to tickerplant
 syms:`MSFT.O`IBM.N`GS.N`BA.N`VOD.L /stocks
 prices:syms!45.15 191.10 178.50 128.04 341.30 /starting prices
-n:2 /number of rows per update
+n:1 /number of rows per update
 flag:1 /generate 10% of updates for trade and 90% for quote
 getmovement:{[s] rand[0.0001]*prices[s]} /get a random price movement
 /generate trade price
